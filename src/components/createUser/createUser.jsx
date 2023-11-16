@@ -4,12 +4,14 @@ import { Box, Button, TextField, MenuItem } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import Modal from './modal';
-import usePost from '../hooks/usePost';
+import Modal from '../modal';
+import usePost from '../../hooks/usePost';
+import { inputs } from './inputs';
 
 const CreateUser = () => {
   const [open, setOpen] = useState(false);
-  const { post, error, data } = usePost({ url: 'https://react-test3.free.beeceptor.com/create-user' })
+  const [showAlert, setShowAlert] = useState(false);
+  const { post, error, data } = usePost({ url: 'https://react-fit.free.beeceptor.com/create-user' })
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -27,6 +29,9 @@ const CreateUser = () => {
   }, [open]);
 
   useEffect(() => {
+    if (data?.status === 'User added!') {
+      setShowAlert(true);
+    }
     handleClose();
   }, [data, error])
 
@@ -75,57 +80,6 @@ const CreateUser = () => {
     })
   );
 
-
-  const inputs = [
-    {
-      label: 'First Name',
-      name: 'firstName',
-      rules: {
-        required: true
-      },
-      type: 'ínput'
-    },
-    {
-      label: 'Last Name',
-      name: 'lastName',
-      rules: {
-        required: true
-      },
-      type: 'ínput'
-    },
-    {
-      label: 'Email',
-      name: 'email',
-      rules: {
-        required: true
-      },
-      type: 'email'
-    },
-    {
-      label: 'Gender',
-      name: 'gender',
-      rules: {
-        required: false
-      },
-      type: 'select',
-      select: true,
-      options: [
-        {
-          label: 'Male',
-          value: 'male'
-        },
-        {
-          label: 'Female',
-          value: 'female'
-        },
-        {
-          label: 'Other',
-          value: 'other'
-        }
-      ]
-    }
-  ];
-
   return (
     <>
       <Button variant='contained' style={{ margin: '50px 0' }} onClick={handleOpen}>
@@ -133,7 +87,9 @@ const CreateUser = () => {
         <Typography>Create item</Typography>
       </Button>
 
-      {data?.status === 'User added!' && <Alert severity='success'>User was added!</Alert>}
+      {showAlert && <Alert severity='success' onClose={() => setShowAlert(false)} sx={{ alignItems: 'center' }}>
+        User was added!
+      </Alert>}
 
       <Modal open={open} handleClose={handleClose}>
         <Typography

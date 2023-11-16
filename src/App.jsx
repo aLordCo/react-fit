@@ -1,10 +1,10 @@
 import Table from './components/table';
 import Loading from './components/loading';
 import useFetch from './hooks/useFetch';
-import CreateUser from './components/createUser';
+import CreateUser from './components/createUser/createUser';
 
 function App() {
-  const { data: usersData, isLoading } = useFetch({ url: 'https://react-test3.free.beeceptor.com/users' });
+  const { data: usersData, isLoading } = useFetch({ url: 'https://react-fit.free.beeceptor.com/users' });
   const columnsData = [
     'Id',
     'First Name',
